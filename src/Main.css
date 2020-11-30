@@ -1,0 +1,75 @@
+.list {
+  list-style-type: none;
+}
+
+.item {
+  padding: 4px;
+}
+
+.link:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.link:hover {
+  background-color: red;
+  color: white;
+  padding: 4px;
+  font-style: italic;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link:link {
+  text-decoration: none;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.title-cont {
+ font-size: 20px;
+ text-align: left;
+ padding-bottom: 30px;
+ padding-top: 30px;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+.title {
+  text-align: left;
+}
+
+.supreme {
+  background-color: red;
+  color: white;
+  display: inline;
+  padding: 4px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.flavors-chart {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.subtitle {
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.chart {
+  text-align: left;
+}
+
+.emph {
+  font-weight: bold;
+  display: inline;
+}
+
