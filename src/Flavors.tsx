@@ -1,6 +1,8 @@
 import React from 'react';
 import './Main.css';
 
+//for the next milestone we will connect the backend to a firebase db and handle 
+//google authentication
 
 type Flavor = {
   name: string;

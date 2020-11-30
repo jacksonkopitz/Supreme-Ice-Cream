@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-//import { useForm } from 'react-hook-form';
 
 
 const Login= () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [correctUser, setCorrectUser] = useState(false);
- // let correctUser = false;
   
   function handleSubmit() {
     if (email === "j@j.com" && password==="123") {
@@ -14,10 +12,16 @@ const Login= () => {
     }
     else {
       alert('wrong email or password');
+      setEmail("");
+      setPassword("");
     }
+  }
+  
+  function handleLogOut(){
+    setCorrectUser(false);
     setEmail("");
     setPassword("");
-  } 
+  }
   
   if (!correctUser){
     return (
@@ -37,10 +41,14 @@ const Login= () => {
   }
   else {
     return (
-     <div>
-       <p>correct user</p>
-       {/* create form for the user to add info to main page */}
-       <button onClick={()=> setCorrectUser(false)}>Log out</button>
+     <div className="container">
+       <p>Welcome Icecream Driver!</p>
+       <p>Fill out this form to update the stock on your icecream truck</p>
+       <input type = "text" placeholder="ice-cream name"></input>
+       <input type = "number" placeholder="0"></input>
+       <button type="button">add</button>
+       <br />
+       <button onClick={handleLogOut}>Log out</button>
      </div> 
     )
   }

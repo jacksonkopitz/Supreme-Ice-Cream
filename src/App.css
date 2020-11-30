@@ -24,10 +24,6 @@
   color: white;
 }
 
-.hide_form {
-  display: none;
-}
-
 .App-link {
   color: #61dafb;
 }
@@ -39,4 +35,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+li{
+  display: inline-block;
 }
