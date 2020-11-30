@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
+import Flavors from "./Flavors";
 //import { useForm } from 'react-hook-form';
 
-
-const Login= () => {
+type flavor = { flavor: {name: string, qty: number }}
+const init_flavors:flavor[] = [
+    // { name: "vanilla", qty: 4 },
+    // { name: "chocolate", qty: 10 },
+    // { name: "mint chip", qty: 3 },
+    // { name: "strawberry", qty: 0 },
+    // { name: "phish food", qty: 40 }
+  ]
+export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [correctUser, setCorrectUser] = useState(false);
- // let correctUser = false;
-  
+
   function handleSubmit() {
     if (email === "j@j.com" && password==="123") {
       setCorrectUser(true);
@@ -17,6 +24,22 @@ const Login= () => {
     }
     setEmail("");
     setPassword("");
+  }
+  const [flavors, setFlavors] = useState(init_flavors);
+  const [name, setName] = useState("");
+  const [qty, setQty] = useState(0);
+
+  const newName = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const nname = event.currentTarget.value;
+    setName(nname);
+  }
+  const newQty = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const nqty = event.currentTarget.valueAsNumber;
+    setQty(nqty);
+  }
+  const addStock=() => {
+    let x = {flavor: {name, qty}}
+    setFlavors([...flavors, x]);
   } 
   
   if (!correctUser){
@@ -36,14 +59,19 @@ const Login= () => {
     );
   }
   else {
+    
     return (
      <div>
-       <p>correct user</p>
+       <p>update stock</p>
+       <input type = "text" placeholder="icecream name" value={name} onChange={newName}></input>
+       <input type="number" placeholder="icecream quantity" value={qty} onChange={newQty}></input>
+       <button type="button" onClick={addStock}></button>
        {/* create form for the user to add info to main page */}
+       {/* <div>{flavors.map(Flavors)}</div> */}
+       <br />
        <button onClick={()=> setCorrectUser(false)}>Log out</button>
      </div> 
     )
   }
 }
 
-export default Login;
