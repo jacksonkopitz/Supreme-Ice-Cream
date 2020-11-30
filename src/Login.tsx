@@ -5,18 +5,20 @@ import React, { useState } from 'react';
 const Login= () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  let correctUser = false;
+  const [correctUser, setCorrectUser] = useState(false);
+ // let correctUser = false;
   
   function handleSubmit() {
     if (email === "j@j.com" && password==="123") {
-      correctUser = true;
+      setCorrectUser(true);
     }
     else {
-      alert('wrong email');
+      alert('wrong email or password');
     }
+    setEmail("");
+    setPassword("");
   } 
-
+  
   if (!correctUser){
     return (
       <div>
@@ -32,13 +34,13 @@ const Login= () => {
         </form>
       </div>
     );
-
   }
   else {
     return (
      <div>
        <p>correct user</p>
        {/* create form for the user to add info to main page */}
+       <button onClick={()=> setCorrectUser(false)}>Log out</button>
      </div> 
     )
   }
