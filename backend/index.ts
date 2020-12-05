@@ -79,12 +79,13 @@ app.get('/getOutOfStock', async function (req, res) {
 });
 
 // update a flavor
-app.post('/updateFlavor/:id', async function (req, res) {
+app.post('/updateFlavor/:id/:qty', async function (req, res) {
   const id: string = req.params.id;
-  const newPost = req.body;
-  await postsCollection.doc(id).update(newPost);
+  const qty: number = parseInt(req.params.qty);
+  await postsCollection.doc(id).update({ qty });
   res.send('UPDATED');
 });
+
 
 // delete a flavor
 app.delete('/deleteFlavor/:id', async function (req, res) {

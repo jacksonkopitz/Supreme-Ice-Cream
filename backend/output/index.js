@@ -23,7 +23,7 @@ firebase_admin_1.default.initializeApp({
 });
 const db = firebase_admin_1.default.firestore();
 const app = express_1.default();
-const port = 3000;
+const port = 8080;
 app.use(body_parser_1.default.json());
 const postsCollection = db.collection('posts');
 // create a flavor
@@ -80,11 +80,11 @@ app.get('/getOutOfStock', function (req, res) {
     });
 });
 // update a flavor
-app.post('/updateFlavor/:id', function (req, res) {
+app.post('/updateFlavor/:id/:qty', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
-        const newPost = req.body;
-        yield postsCollection.doc(id).update(newPost);
+        const qty = parseInt(req.params.qty);
+        yield postsCollection.doc(id).update({ qty });
         res.send('UPDATED');
     });
 });
