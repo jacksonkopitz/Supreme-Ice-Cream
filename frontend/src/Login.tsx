@@ -20,9 +20,9 @@ const Login = () => {
   }
   useEffect(() => { fetchFlavors() }, []);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [correctUser, setCorrectUser] = useState(false);
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [correctUser, setCorrectUser] = useState(false);
 
   const [newFlavor, setNewFlavor] = useState("");
   const [flavorToDelete, setFlavorToDelete] = useState("");
@@ -30,22 +30,22 @@ const Login = () => {
   const [flavorToUpdate, setFlavorToUpdate] = useState("");
 
 
-  function handleSubmit() {
-    if (email === "2@2" && password === "2") {
-      setCorrectUser(true);
-    }
-    else {
-      alert('wrong email or password');
-      setEmail("");
-      setPassword("");
-    }
-  }
+  // function handleSubmit() {
+  //   if (email === "2@2" && password === "2") {
+  //     setCorrectUser(true);
+  //   }
+  //   else {
+  //     alert('wrong email or password');
+  //     setEmail("");
+  //     setPassword("");
+  //   }
+  // }
 
-  function handleLogOut() {
-    setCorrectUser(false);
-    setEmail("");
-    setPassword("");
-  }
+  // function handleLogOut() {
+  //   setCorrectUser(false);
+  //   setEmail("");
+  //   setPassword("");
+  // }
 
   const newFlavorChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -134,7 +134,7 @@ const Login = () => {
 
       <button onClick={deleteFlavor}>Delete Flavor</button>
       <br />
-      <button onClick={handleLogOut}>Log out</button>
+      {/* <button onClick={handleLogOut}>Log out</button> */}
     </div>
   )
 }

@@ -9,6 +9,7 @@ import {
 import Login from './Login';
 import Homepage, { Flavor, FlavorWithID } from './Homepage';
 import axios from 'axios';
+import Authenticated from './Authenticated';
 
 
 // type Flavor = {
@@ -21,7 +22,7 @@ import axios from 'axios';
 // }
 
 
-export default function App() {
+export default function App(): React.ReactElement {
 
   return (
     <Router>
@@ -39,7 +40,9 @@ export default function App() {
             <Homepage />
           </Route>
           <Route path="/login">
+          <Authenticated>
             <Login />
+          </Authenticated>
           </Route>
           <Route path="">
             <Homepage />
