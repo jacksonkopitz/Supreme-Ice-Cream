@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
-
+import 'firebase/auth';
+import firebase from 'firebase';
 
 type Flavor = {
   readonly name: string;
@@ -134,7 +135,7 @@ const Login = () => {
 
       <button onClick={deleteFlavor}>Delete Flavor</button>
       <br />
-      {/* <button onClick={handleLogOut}>Log out</button> */}
+      <button onClick={()=>firebase.auth().signOut()}>Log out</button>
     </div>
   )
 }

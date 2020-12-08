@@ -3,6 +3,7 @@ import 'firebase/auth';
 // import firebase from 'firebase/app';
 import firebase from 'firebase';
 import FirebaseAuth from 'react-firebaseui/FirebaseAuth';
+import { setupMaster } from 'cluster';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEQILmhz3O-p577zSwaQ19iiZeNh97zXU",
@@ -26,23 +27,26 @@ const Authenticated = ({ children }: Props) => {
 
   const uiConfig = {
     signInFlow: 'popup',
+    //signInSuccessUrl: window.location.href,
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
 
   function onAuthStateChange() {
+    //console.log("onAuthStateChange")
     return firebase.auth().onAuthStateChanged((user) => {
       setUser(user);
     });
   }
-
   useEffect(() => onAuthStateChange(), []);
-
+  
   return (
     <div>
       {user && children}
       {!user && (
         <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        
       )}
+      {/* <button onClick={()=>setUser(null)}>sign out</button> */}
     </div>
   );
 };
