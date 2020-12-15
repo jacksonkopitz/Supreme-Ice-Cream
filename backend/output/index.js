@@ -21,62 +21,61 @@ firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(serviceAccount),
     databaseURL: 'https://supreme-ice-cream-default-rtdb.firebaseio.com',
 });
-const db = firebase_admin_1.default.firestore();
+const iceCreamDB = firebase_admin_1.default.firestore();
 const app = express_1.default();
 const port = 8080;
 app.use(body_parser_1.default.json());
-const postsCollection = db.collection('posts');
+const flavorCollection = iceCreamDB.collection('posts');
 // create a flavor
 app.post('/addFlavor', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const post = req.body;
-        const myDoc = postsCollection.doc();
-        yield myDoc.set(post);
-        res.send(myDoc.id);
+        const flavorToAdd = req.body;
+        const flavorDoc = flavorCollection.doc();
+        yield flavorDoc.set(flavorToAdd);
+        res.send(flavorDoc.id);
     });
 });
 // read all flavors
 app.get('/getFlavors', function (_, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        // we don't use the first request parameter
-        const allPostsDoc = yield postsCollection.get();
-        const posts = [];
-        for (let doc of allPostsDoc.docs) {
-            let post = doc.data();
-            post.id = doc.id;
-            posts.push(post);
+        const allFlavorDocs = yield flavorCollection.get();
+        const retrievedFlavors = [];
+        for (let doc of allFlavorDocs.docs) {
+            let currFlavor = doc.data();
+            currFlavor.id = doc.id;
+            retrievedFlavors.push(currFlavor);
         }
-        res.send(posts);
+        res.send(retrievedFlavors);
     });
 });
 // read flavor by name
 app.get('/getFlavor/:name', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const namePostsDoc = yield postsCollection
+        const namedFlavorDocs = yield flavorCollection
             .where('name', '==', req.params.name)
             .get();
-        const posts = [];
-        for (let doc of namePostsDoc.docs) {
-            let post = doc.data();
-            post.id = doc.id;
-            posts.push(post);
+        const retrievedFlavor = [];
+        for (let doc of namedFlavorDocs.docs) {
+            let currFlavor = doc.data();
+            currFlavor.id = doc.id;
+            retrievedFlavor.push(currFlavor);
         }
-        res.send(posts);
+        res.send(retrievedFlavor);
     });
 });
 // read flavors that are out of stock
 app.get('/getOutOfStock', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const namePostsDoc = yield postsCollection
+        const outOfStockDocs = yield flavorCollection
             .where('qty', '==', 0)
             .get();
-        const posts = [];
-        for (let doc of namePostsDoc.docs) {
+        const retrievedFlavors = [];
+        for (let doc of outOfStockDocs.docs) {
             let post = doc.data();
             post.id = doc.id;
-            posts.push(post);
+            retrievedFlavors.push(post);
         }
-        res.send(posts);
+        res.send(retrievedFlavors);
     });
 });
 // update a flavor
@@ -84,7 +83,7 @@ app.post('/updateFlavor/:id/:qty', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
         const qty = parseInt(req.params.qty);
-        yield postsCollection.doc(id).update({ qty });
+        yield flavorCollection.doc(id).update({ qty });
         res.send('UPDATED');
     });
 });
@@ -92,7 +91,7 @@ app.post('/updateFlavor/:id/:qty', function (req, res) {
 app.delete('/deleteFlavor/:id', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
-        yield postsCollection.doc(id).delete();
+        yield flavorCollection.doc(id).delete();
         res.send('DELETED');
     });
 });

@@ -11,17 +11,6 @@ import Homepage, { Flavor, FlavorWithID } from './Homepage';
 import axios from 'axios';
 import Authenticated from './Authenticated';
 
-
-// type Flavor = {
-//   readonly name: string;
-//   readonly qty: number
-// }
-
-// type FlavorWithID = Flavor & {
-//   readonly id: string;
-// }
-
-
 export default function App(): React.ReactElement {
 
   return (
@@ -40,9 +29,9 @@ export default function App(): React.ReactElement {
             <Homepage />
           </Route>
           <Route path="/login">
-          <Authenticated>
-            <Login />
-          </Authenticated>
+            <Authenticated>
+              <Login />
+            </Authenticated>
           </Route>
           <Route path="">
             <Homepage />

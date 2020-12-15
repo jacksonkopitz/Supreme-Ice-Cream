@@ -10,7 +10,7 @@ admin.initializeApp({
   databaseURL: 'https://supreme-ice-cream-default-rtdb.firebaseio.com',
 });
 
-const db = admin.firestore();
+const iceCreamDB = admin.firestore();
 
 const app = express();
 const port = 8080;
@@ -27,62 +27,61 @@ type FlavorWithID = Flavor & {
   id: string;
 };
 
-const postsCollection = db.collection('posts');
+const flavorCollection = iceCreamDB.collection('posts');
 
 // create a flavor
 app.post('/addFlavor', async function (req, res) {
-  const post: Flavor = req.body;
-  const myDoc = postsCollection.doc();
-  await myDoc.set(post);
-  res.send(myDoc.id);
+  const flavorToAdd: Flavor = req.body;
+  const flavorDoc = flavorCollection.doc();
+  await flavorDoc.set(flavorToAdd);
+  res.send(flavorDoc.id);
 });
 
 // read all flavors
 app.get('/getFlavors', async function (_, res) {
-  // we don't use the first request parameter
-  const allPostsDoc = await postsCollection.get();
-  const posts: FlavorWithID[] = [];
-  for (let doc of allPostsDoc.docs) {
-    let post: FlavorWithID = doc.data() as FlavorWithID;
-    post.id = doc.id;
-    posts.push(post);
+  const allFlavorDocs = await flavorCollection.get();
+  const retrievedFlavors: FlavorWithID[] = [];
+  for (let doc of allFlavorDocs.docs) {
+    let currFlavor: FlavorWithID = doc.data() as FlavorWithID;
+    currFlavor.id = doc.id;
+    retrievedFlavors.push(currFlavor);
   }
-  res.send(posts);
+  res.send(retrievedFlavors);
 });
 
 // read flavor by name
 app.get('/getFlavor/:name', async function (req, res) {
-  const namePostsDoc = await postsCollection
+  const namedFlavorDocs = await flavorCollection
     .where('name', '==', req.params.name)
     .get();
-  const posts: FlavorWithID[] = [];
-  for (let doc of namePostsDoc.docs) {
-    let post: FlavorWithID = doc.data() as FlavorWithID;
-    post.id = doc.id;
-    posts.push(post);
+  const retrievedFlavor: FlavorWithID[] = [];
+  for (let doc of namedFlavorDocs.docs) {
+    let currFlavor: FlavorWithID = doc.data() as FlavorWithID;
+    currFlavor.id = doc.id;
+    retrievedFlavor.push(currFlavor);
   }
-  res.send(posts);
+  res.send(retrievedFlavor);
 });
 
 // read flavors that are out of stock
 app.get('/getOutOfStock', async function (req, res) {
-  const namePostsDoc = await postsCollection
+  const outOfStockDocs = await flavorCollection
     .where('qty', '==', 0)
     .get();
-  const posts: FlavorWithID[] = [];
-  for (let doc of namePostsDoc.docs) {
+  const retrievedFlavors: FlavorWithID[] = [];
+  for (let doc of outOfStockDocs.docs) {
     let post: FlavorWithID = doc.data() as FlavorWithID;
     post.id = doc.id;
-    posts.push(post);
+    retrievedFlavors.push(post);
   }
-  res.send(posts);
+  res.send(retrievedFlavors);
 });
 
 // update a flavor
 app.post('/updateFlavor/:id/:qty', async function (req, res) {
   const id: string = req.params.id;
   const qty: number = parseInt(req.params.qty);
-  await postsCollection.doc(id).update({ qty });
+  await flavorCollection.doc(id).update({ qty });
   res.send('UPDATED');
 });
 
@@ -90,8 +89,33 @@ app.post('/updateFlavor/:id/:qty', async function (req, res) {
 // delete a flavor
 app.delete('/deleteFlavor/:id', async function (req, res) {
   const id: string = req.params.id;
-  await postsCollection.doc(id).delete();
+  await flavorCollection.doc(id).delete();
   res.send('DELETED');
 });
+
+// app.delete('/deleteFlavor/:id', async function (req, res) {
+//   admin.auth().verifyIdToken(req.headers.idtoken as string)
+//     .then(async () => {
+//       const id: string = req.params.id;
+//       await flavorCollection.doc(id).delete();
+//       res.send('DELETED');
+//     })
+//     .catch(() => { console.log('auth err') }
+//     )
+// });
+
+// app.post('/createSong', async (req, res) => {
+//   admin
+//     .auth()
+//     .verifyIdToken(req.headers.idtoken as string)
+//     .then(async () => {
+//       const newSong = req.body;
+//       const addedSong = await songsCollection.add(newSong);
+//       res.send(addedSong.id);
+//     })
+//     .catch(() => {
+//       console.log('auth error');
+//     });
+// });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

@@ -14,6 +14,7 @@ const firebaseConfig = {
   messagingSenderId: "1006059533503",
   appId: "1:1006059533503:web:a843f5763eda2acd5b820a",
   measurementId: "G-MD6EP7LHWS"
+
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -27,24 +28,22 @@ const Authenticated = ({ children }: Props) => {
 
   const uiConfig = {
     signInFlow: 'popup',
-    //signInSuccessUrl: window.location.href,
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
 
   function onAuthStateChange() {
-    //console.log("onAuthStateChange")
     return firebase.auth().onAuthStateChanged((user) => {
       setUser(user);
     });
   }
   useEffect(() => onAuthStateChange(), []);
-  
+
   return (
     <div>
       {user && children}
       {!user && (
         <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-        
+
       )}
       {/* <button onClick={()=>setUser(null)}>sign out</button> */}
     </div>

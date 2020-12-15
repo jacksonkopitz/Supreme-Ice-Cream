@@ -2,6 +2,8 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import 'firebase/auth';
 import firebase from 'firebase';
+import './App.css';
+import './Login.css';
 
 type Flavor = {
   readonly name: string;
@@ -21,48 +23,23 @@ const Login = () => {
   }
   useEffect(() => { fetchFlavors() }, []);
 
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [correctUser, setCorrectUser] = useState(false);
-
   const [newFlavor, setNewFlavor] = useState("");
   const [flavorToDelete, setFlavorToDelete] = useState("");
   const [newStock, setNewStock] = useState(0);
   const [flavorToUpdate, setFlavorToUpdate] = useState("");
-
-
-  // function handleSubmit() {
-  //   if (email === "2@2" && password === "2") {
-  //     setCorrectUser(true);
-  //   }
-  //   else {
-  //     alert('wrong email or password');
-  //     setEmail("");
-  //     setPassword("");
-  //   }
-  // }
-
-  // function handleLogOut() {
-  //   setCorrectUser(false);
-  //   setEmail("");
-  //   setPassword("");
-  // }
+  const [messege, setMessege] = useState("");
 
   const newFlavorChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setNewFlavor(val);
   }
 
-  // const newQtyChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const val = e.target.value;
-  //   setNewQty(parseInt(val));
-  // }
-
   const newFlavorAdder = async () => {
     const body: Flavor = { name: newFlavor, qty: 0 };
     const { data: id } = await axios.post<string>('/addFlavor', body);
     setFlavors([...flavors1, { name: newFlavor, qty: 0, id: id }]);
     setNewFlavor("");
+    setMessege("new flavor added successfully")
 
   }
 
@@ -74,7 +51,47 @@ const Login = () => {
   const deleteFlavor = async () => {
     await axios.delete<string>(`/deleteFlavor/${flavorToDelete}`);
     setFlavors(flavors1.filter(x => !(x.id === flavorToDelete)));
+    setMessege("flavor deleted successfully");
   }
+
+  // const deleteFlavor = async () => {
+  //   firebase.auth().currentUser?.getIdToken(true)
+  //     .then((idtoken) => {
+  //       fetch(`/deleteFlavor/${flavorToDelete}`, {
+  //         method: 'DELETE',
+  //         headers: { idtoken }
+  //       })
+  //         .then((res) => (res))
+  //         .then(_ => setFlavors(flavors1.filter(x => {
+  //           !(x.id === flavorToDelete);
+  //           setMessege("flavor deleted successfully");
+  //         })))
+  //     })
+  //     .catch(() => {
+  //       setMessege("permission denied");
+  //     });
+  // };
+
+  // const addSong = (name: string, artist: string, rating: number) => {
+  //   firebase
+  //     .auth()
+  //     .currentUser?.getIdToken(true)
+  //     .then((idtoken) => {
+  //       fetch('/createSong', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           idtoken,
+  //         },
+  //         body: JSON.stringify({ name, artist, rating }),
+  //       })
+  //         .then((res) => res.text())
+  //         .then((id) => setSongs([...songs, { name, artist, rating, id }]));
+  //     })
+  //     .catch(() => {
+  //       console.log('not authenticated');
+  //     });
+  // };
 
   const newStockChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -89,53 +106,64 @@ const Login = () => {
   const addStock = async () => {
     await axios.post(`/updateFlavor/${flavorToUpdate}/${newStock}`);
     setFlavors(flavors1.map(x =>
-      (x.id === flavorToUpdate ? { ...x, qty: newStock } : x)))
+      (x.id === flavorToUpdate ? { ...x, qty: newStock } : x)));
+    setNewStock(0);
+    setMessege("stock updated successfully")
   }
 
-  // if (!correctUser) {
-  //   return (
-  //     <div>
-  //       <form onSubmit={handleSubmit}>
-  //         <label>
-  //           Email:
-  //           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-  //         </label>
-  //         <label>
-  //           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-  //         </label>
-  //         <input type="submit" value="Submit" />
-  //       </form>
-  //     </div>
-  //   );
-  // }
-  // else {
   return (
     <div className="container">
-      <p>Welcome Icecream Driver!</p>
-      <p>Fill out this form to update the stock on your icecream truck</p>
 
-      <br />
-      <label> Add Stock: </label>
-      <select name="flavor" id="updateStockDropDown" value={flavorToUpdate} onChange={flavorToUpdateChange} placeholder="select">
-        {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
-      </select>
-      <input type="number" placeholder="0" value={newStock} onChange={newStockChange}></input>
-      <button onClick={addStock}>Add Stock</button>
+      <p>fill out this form to update, add, or remove a flavor</p>
 
-      <br />
-      <label> Add New Flavor: </label>
-      <input type="text" placeholder="new flavor" value={newFlavor} onChange={newFlavorChange}></input>
-      <button onClick={newFlavorAdder}>Add Flavor</button>
-      <br />
+      <div className="change-containers">
+        <div className="stock-change-container">
+          <div><label><div className="supreme">Update</div> a flavor: </label></div>
+          <div><select name="flavor" id="updateStockDropDown" value={flavorToUpdate} onChange={flavorToUpdateChange} placeholder="select">
+            {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
+          </select>
+          </div>
+          <div>
+            <input type="number" placeholder="0" value={newStock} onChange={newStockChange}></input>
+          </div>
+          <div>
+            <button onClick={addStock}>update stock</button>
+          </div>
+        </div>
 
-      <label> Remove A Flavor: </label>
-      <select name="flavor" id="flavorDeleteDropDown" value={flavorToDelete} onChange={deleteFlavorChange} placeholder="select">
-        {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
-      </select>
+        <div className="stock-change-container">
+          <div><label><div className="supreme">Add</div> a flavor: </label></div>
+          <div><input type="text" placeholder="new flavor" value={newFlavor} onChange={newFlavorChange}></input></div>
+          <div><button onClick={newFlavorAdder}>add flavor</button></div>
+        </div>
 
-      <button onClick={deleteFlavor}>Delete Flavor</button>
-      <br />
-      <button onClick={()=>firebase.auth().signOut()}>Log out</button>
+        <div className="stock-change-container">
+          <div><label><div className="supreme">Remove</div> a flavor: </label></div>
+          <div><select name="flavor" id="flavorDeleteDropDown" value={flavorToDelete} onChange={deleteFlavorChange} placeholder="select">
+            {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
+          </select>
+          </div>
+          <div>
+            <button onClick={deleteFlavor}>delete flavor</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="feedback-container">
+        <p>{messege}</p>
+      </div>
+
+      <div className="stock-container">
+        <div className="subtitle">current stock</div>
+        <div className="chart">
+          {Object.keys(flavors1).length === 0 ? <div>empty</div> : flavors1.map(x =>
+            <div><p className="emph">{x.qty}</p> scoops of <p className="emph">{x.name}</p> in stock</div>)}
+        </div>
+      </div>
+
+      <div className="logout-container">
+        <button onClick={() => firebase.auth().signOut()}>Log out</button>
+      </div>
     </div>
   )
 }
