@@ -16,6 +16,8 @@ const firebase_admin_1 = __importDefault(require("firebase-admin"));
 const express_1 = __importDefault(require("express"));
 // also install type aliases for Request, Response - ???, from website
 const body_parser_1 = __importDefault(require("body-parser"));
+const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const serviceAccount = require('../service-account.json');
 firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(serviceAccount),
@@ -23,6 +25,8 @@ firebase_admin_1.default.initializeApp({
 });
 const iceCreamDB = firebase_admin_1.default.firestore();
 const app = express_1.default();
+app.use(cors_1.default());
+app.use(express_1.default.static(path_1.default.join(__dirname, '../frontend/build')));
 const port = 8080;
 app.use(body_parser_1.default.json());
 const flavorCollection = iceCreamDB.collection('posts');
@@ -118,4 +122,4 @@ app.delete('/deleteFlavor/:id', function (req, res) {
 //       console.log('auth error');
 //     });
 // });
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`));

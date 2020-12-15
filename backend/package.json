@@ -1,11 +1,12 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT",
   "scripts": {
+    "tsc" : "tsc -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
-    "start": "node output/index.js"
+    "start": "yarn tsc && node output/index.js"
   },
   "dependencies": {
     "@types/cors": "^2.8.9",
