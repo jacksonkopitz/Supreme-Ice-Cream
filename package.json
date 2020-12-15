@@ -2,7 +2,7 @@
   "name": "Supreme-Ice-Cream",
   "private": true,
   "scripts": {
-    "heroku-postbuild": "yarn workspace run build"
+    "heroku-postbuild": "yarn workspaces run build"
   },
   "workspaces": [
     "frontend",
