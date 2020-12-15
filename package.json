@@ -14,6 +14,6 @@
   "author": "Jacob Mitrani <jcm497@cornell.edu>",
   "license": "MIT",
   "devDependencies": {
-    "heroku": "^7.47.3"
+    "heroku": "^7.47.5"
   }
 }
