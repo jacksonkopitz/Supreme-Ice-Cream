@@ -2,6 +2,8 @@ import admin from 'firebase-admin';
 import express from 'express';
 // also install type aliases for Request, Response - ???, from website
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import path from 'path';
 
 const serviceAccount = require('../service-account.json');
 
@@ -13,6 +15,8 @@ admin.initializeApp({
 const iceCreamDB = admin.firestore();
 
 const app = express();
+app.use(cors());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 const port = 8080;
 app.use(bodyParser.json());
 
@@ -118,4 +122,4 @@ app.delete('/deleteFlavor/:id', async function (req, res) {
 //     });
 // });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`));
