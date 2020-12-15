@@ -1,5 +1,10 @@
 {
   "name": "Supreme-Ice-Cream",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "version": "1.0.0",
   "main": "index.js",
   "repository": "y",
