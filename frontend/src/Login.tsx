@@ -54,45 +54,6 @@ const Login = () => {
     setMessege("flavor deleted successfully");
   }
 
-  // const deleteFlavor = async () => {
-  //   firebase.auth().currentUser?.getIdToken(true)
-  //     .then((idtoken) => {
-  //       fetch(`/deleteFlavor/${flavorToDelete}`, {
-  //         method: 'DELETE',
-  //         headers: { idtoken }
-  //       })
-  //         .then((res) => (res))
-  //         .then(_ => setFlavors(flavors1.filter(x => {
-  //           !(x.id === flavorToDelete);
-  //           setMessege("flavor deleted successfully");
-  //         })))
-  //     })
-  //     .catch(() => {
-  //       setMessege("permission denied");
-  //     });
-  // };
-
-  // const addSong = (name: string, artist: string, rating: number) => {
-  //   firebase
-  //     .auth()
-  //     .currentUser?.getIdToken(true)
-  //     .then((idtoken) => {
-  //       fetch('/createSong', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           idtoken,
-  //         },
-  //         body: JSON.stringify({ name, artist, rating }),
-  //       })
-  //         .then((res) => res.text())
-  //         .then((id) => setSongs([...songs, { name, artist, rating, id }]));
-  //     })
-  //     .catch(() => {
-  //       console.log('not authenticated');
-  //     });
-  // };
-
   const newStockChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setNewStock(parseInt(val));
@@ -119,9 +80,11 @@ const Login = () => {
       <div className="change-containers">
         <div className="stock-change-container">
           <div><label><div className="supreme">Update</div> a flavor: </label></div>
-          <div><select name="flavor" id="updateStockDropDown" value={flavorToUpdate} onChange={flavorToUpdateChange} placeholder="select">
-            {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
-          </select>
+          <div>
+            <select name="flavor" id="updateStockDropDown" value={flavorToUpdate} onChange={flavorToUpdateChange} placeholder="select">
+            <option hidden disabled value = "">Select</option>
+              {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
+            </select>
           </div>
           <div>
             <input type="number" placeholder="0" value={newStock} onChange={newStockChange}></input>
@@ -140,6 +103,7 @@ const Login = () => {
         <div className="stock-change-container">
           <div><label><div className="supreme">Remove</div> a flavor: </label></div>
           <div><select name="flavor" id="flavorDeleteDropDown" value={flavorToDelete} onChange={deleteFlavorChange} placeholder="select">
+            <option hidden disabled value = "">Select</option>
             {flavors1.map(x => <option value={x.id}>{x.name}</option>)}
           </select>
           </div>

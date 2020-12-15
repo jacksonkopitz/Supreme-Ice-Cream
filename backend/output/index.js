@@ -95,4 +95,27 @@ app.delete('/deleteFlavor/:id', function (req, res) {
         res.send('DELETED');
     });
 });
+// app.delete('/deleteFlavor/:id', async function (req, res) {
+//   admin.auth().verifyIdToken(req.headers.idtoken as string)
+//     .then(async () => {
+//       const id: string = req.params.id;
+//       await flavorCollection.doc(id).delete();
+//       res.send('DELETED');
+//     })
+//     .catch(() => { console.log('auth err') }
+//     )
+// });
+// app.post('/createSong', async (req, res) => {
+//   admin
+//     .auth()
+//     .verifyIdToken(req.headers.idtoken as string)
+//     .then(async () => {
+//       const newSong = req.body;
+//       const addedSong = await songsCollection.add(newSong);
+//       res.send(addedSong.id);
+//     })
+//     .catch(() => {
+//       console.log('auth error');
+//     });
+// });
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
