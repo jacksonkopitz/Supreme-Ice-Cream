@@ -1,0 +1,24 @@
+.stock-change-container {
+  display: block;
+  padding-top: 10px;
+  padding-left: 30px;
+}
+
+.change-containers {
+  display: flex;
+}
+
+.feedback-container {
+  color: red;
+  padding-top: 10px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.stock-container {
+  padding-top: 10px;
+}
+
+.logout-container {
+  padding-top: 20px;
+}
